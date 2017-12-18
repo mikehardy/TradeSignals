@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Trade Signals</string>
+
+    <string name="hello_world">Look Mom, my first App!</string>
+    <string name="action_settings">Settings</string>
+    <string name="edit_message">Ticker Symbol</string>
+    <string name="send_message">Lookup</string>
+    <string name="fetch_fred">Fetch FRED Data</string>
+</resources>
