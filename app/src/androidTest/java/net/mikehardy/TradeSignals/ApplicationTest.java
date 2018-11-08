@@ -1,6 +1,7 @@
 package net.mikehardy.TradeSignals;
 
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -12,6 +13,6 @@ public class ApplicationTest {
 
     @Test
     public void testQuoteFetch() {
-
+        Assert.assertTrue(true);
     }
 }

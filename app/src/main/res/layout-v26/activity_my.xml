@@ -11,11 +11,11 @@
 
     <EditText android:id="@+id/edit_message"
         android:layout_weight="0"
+        android:importantForAutofill="no"
         android:inputType="textCapCharacters"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/edit_message"
-        tools:ignore="Autofill" />
+        android:hint="@string/edit_message" />
 
     <Button
         android:layout_width="wrap_content"

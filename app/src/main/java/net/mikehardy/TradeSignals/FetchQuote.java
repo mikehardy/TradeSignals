@@ -1,5 +1,6 @@
 package net.mikehardy.TradeSignals;
 
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.TextView;
@@ -17,6 +18,7 @@ public class FetchQuote extends AsyncTask<String, Void, Stock> {
 
     private static final String TAG = FetchQuote.class.getName();
 
+    @SuppressLint("StaticFieldLeak")
     private TextView view = null;
 
     protected void setView(TextView view) {
@@ -30,15 +32,14 @@ public class FetchQuote extends AsyncTask<String, Void, Stock> {
                 return null;
             }
             Log.d(TAG, "doInBackground: ticker is " + ticker);
-            Stock stock = YahooFinance.get(ticker);
-            StockQuote quote = stock.getQuote();
-            return stock;
+            return YahooFinance.get(ticker);
         } catch (Exception e) {
             Log.d(TAG, "doInBackground: exception? Dang ", e);
         }
         return null;
     }
 
+    @SuppressLint("SetTextI18n")
     protected void onPostExecute(Stock stock) {
 
         StockQuote quote = stock.getQuote();

@@ -1,6 +1,8 @@
 package net.mikehardy.TradeSignals;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,14 +13,13 @@ import android.widget.TextView;
 
 public class Dashboard extends AppCompatActivity {
 
-    public static final String TAG = Dashboard.class.getName();
-
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
 
-        EditText editText = (EditText) findViewById(R.id.edit_message);
+        EditText editText = findViewById(R.id.edit_message);
         editText.setText("SPY");
 
         // do a lookup right at the start
@@ -49,21 +50,25 @@ public class Dashboard extends AppCompatActivity {
     }
 
     /** Called when user clicks quote lookup */
-    public void lookupQuote(View view) {
+    @SuppressWarnings("WeakerAccess")
+    @SuppressLint("SetTextI18n")
+    public void lookupQuote(@SuppressWarnings("unused") View view) {
 
-        EditText editText = (EditText) findViewById(R.id.edit_message);
+        EditText editText = findViewById(R.id.edit_message);
         String editMessage = editText.getText().toString();
         FetchQuote quoteFetcher = new FetchQuote();
-        TextView tickerDisplay = (TextView) findViewById(R.id.ticker_display);
+        TextView tickerDisplay = findViewById(R.id.ticker_display);
         quoteFetcher.setView(tickerDisplay);
         tickerDisplay.setText("Fetching quote for " + editMessage);
         quoteFetcher.execute(editMessage);
     }
 
     /** Get Recessionary signal */
+    @SuppressWarnings({"WeakerAccess", "unused"})
+    @SuppressLint("SetTextI18n")
     public void getFredData(View view) {
 
-        TextView fredTextView = (TextView) findViewById(R.id.fred_info);
+        TextView fredTextView = findViewById(R.id.fred_info);
         fredTextView.setText("Fetching data from FRED...");
         FetchFred fredFetcher = new FetchFred();
         fredFetcher.setView(fredTextView);

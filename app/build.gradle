@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'jacoco'
 
 android {
     compileSdkVersion 28
@@ -9,11 +10,26 @@ android {
         targetSdkVersion 28
         versionCode 20181017
         versionName "1.0"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
+        debug {
+            debuggable true
+            testCoverageEnabled true
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    testOptions {
+        // we should use orchestrator, but app data shared on /sdcard makes it unstable
+        //execution 'ANDROID_TEST_ORCHESTRATOR'
+        animationsDisabled true
+
+        unitTests {
+            includeAndroidResources = true
         }
     }
 
@@ -23,15 +39,41 @@ android {
     }
 }
 
+
+
+// Deprecation is an error. Use @SuppressWarnings("deprecation") and justify in the PR if you must
+tasks.withType(JavaCompile) {
+    options.compilerArgs << "-Xlint:deprecation" << "-Xmaxwarns" << "1000" << "-Werror"
+}
+
+// Our merge report task
+task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
+
+    reports {
+        xml.enabled = true
+    }
+
+    def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
+    def debugTree = fileTree(dir: "$project.buildDir/intermediates/javac/debug/compileDebugJavaWithJavac/classes", excludes: fileFilter)
+    def mainSrc = "$project.projectDir/src/main/java"
+
+    sourceDirectories = files([mainSrc])
+    classDirectories = files([debugTree])
+    executionData = fileTree(dir: project.buildDir, includes: [
+            'jacoco/testDebugUnitTest.exec',
+            'outputs/code-coverage/connected/**/*.ec'
+    ])
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.yahoofinance-api:YahooFinanceAPI:3.14.0'
     implementation 'com.loopj.android:android-async-http:1.4.9'
     implementation 'org.slf4j:slf4j-jdk14:1.7.25'
 
     testImplementation 'org.junit.vintage:junit-vintage-engine:5.3.1'
-    androidTestImplementation 'androidx.test.ext:junit:1.0.0-beta02'
-    androidTestImplementation 'androidx.test:runner:1.1.0-beta02'
+    androidTestImplementation 'androidx.test.ext:junit:1.0.0'
+    androidTestImplementation 'androidx.test:runner:1.1.0'
 }
