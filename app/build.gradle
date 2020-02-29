@@ -57,23 +57,23 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'crea
     def debugTree = fileTree(dir: "$project.buildDir/intermediates/javac/debug/compileDebugJavaWithJavac/classes", excludes: fileFilter)
     def mainSrc = "$project.projectDir/src/main/java"
 
-    sourceDirectories = files([mainSrc])
-    classDirectories = files([debugTree])
-    executionData = fileTree(dir: project.buildDir, includes: [
-            'jacoco/testDebugUnitTest.exec',
-            'outputs/code-coverage/connected/**/*.ec'
+    sourceDirectories.from = files([mainSrc])
+    classDirectories.from = files([debugTree])
+    executionData.from = fileTree(dir: project.buildDir, includes: [
+            '**/*.exec',
+            '**/*.ec'
     ])
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
+    implementation 'com.google.android.material:material:1.1.0'
     implementation 'com.yahoofinance-api:YahooFinanceAPI:3.14.0'
     implementation 'com.loopj.android:android-async-http:1.4.9'
     implementation 'org.slf4j:slf4j-jdk14:1.7.25'
 
-    testImplementation 'org.junit.vintage:junit-vintage-engine:5.3.1'
-    androidTestImplementation 'androidx.test.ext:junit:1.0.0'
+    testImplementation 'org.junit.vintage:junit-vintage-engine:5.6.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test:runner:1.1.0'
 }
